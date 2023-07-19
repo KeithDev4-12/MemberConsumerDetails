@@ -1,0 +1,32 @@
+unit USearchConsumer;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.WinXCtrls, Vcl.Buttons;
+
+type
+  TSearchConsumerU = class(TForm)
+    Panel1: TPanel;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    RadioButton3: TRadioButton;
+    Label1: TLabel;
+    SearchBox1: TSearchBox;
+    BitBtn1: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  SearchConsumerU: TSearchConsumerU;
+
+implementation
+
+{$R *.dfm}
+
+end.

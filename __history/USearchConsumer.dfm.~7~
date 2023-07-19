@@ -1,0 +1,82 @@
+object SearchConsumerU: TSearchConsumerU
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'Search Member Consumers'
+  ClientHeight = 74
+  ClientWidth = 390
+  Color = clBtnHighlight
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  PixelsPerInch = 97
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 147
+    Top = 7
+    Width = 126
+    Height = 18
+    Caption = 'Account Number '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 142
+    Height = 74
+    Align = alLeft
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    TabOrder = 0
+    ExplicitHeight = 100
+    object RadioButton1: TRadioButton
+      Left = 8
+      Top = 4
+      Width = 126
+      Height = 17
+      Caption = '  Account Number'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object RadioButton2: TRadioButton
+      Left = 8
+      Top = 25
+      Width = 126
+      Height = 17
+      Caption = '  Consumer Name'
+      TabOrder = 1
+    end
+    object RadioButton3: TRadioButton
+      Left = 8
+      Top = 47
+      Width = 126
+      Height = 17
+      Caption = '  Meter Serial Number'
+      TabOrder = 2
+    end
+  end
+  object SearchBox1: TSearchBox
+    Left = 147
+    Top = 32
+    Width = 237
+    Height = 27
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    Text = '04210125'
+  end
+end

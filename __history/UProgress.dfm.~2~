@@ -1,0 +1,17 @@
+object ProgressBar: TProgressBar
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'ProgressBar'
+  ClientHeight = 257
+  ClientWidth = 232
+  Color = clBtnHighlight
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 97
+  TextHeight = 13
+end

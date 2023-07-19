@@ -1,0 +1,71 @@
+unit USearchConsumer;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.WinXCtrls, Vcl.Buttons;
+
+type
+  TSearchConsumerU = class(TForm)
+    Panel1: TPanel;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    RadioButton3: TRadioButton;
+    Label1: TLabel;
+    SearchBox1: TSearchBox;
+    BitBtn1: TBitBtn;
+    procedure SearchBox1Change(Sender: TObject);
+    procedure RadioButton1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    LocateAccountNumber : String;
+  end;
+
+var
+  SearchConsumerU: TSearchConsumerU;
+
+
+implementation
+
+{$R *.dfm}
+
+uses UMainModuleConnection;
+
+procedure TSearchConsumerU.BitBtn1Click(Sender: TObject);
+begin
+  LocateAccountNumber := MainModuleU.VTMasterAccountNumber.AsString;
+  Close;
+end;
+
+procedure TSearchConsumerU.RadioButton1Click(Sender: TObject);
+begin
+  if Radiobutton1.Checked then begin
+    Label1.Caption := 'Account Number';
+  end else if Radiobutton1.Checked then begin
+    Label1.Caption := 'Consumer Name';
+  end else if Radiobutton1.Checked then begin
+    Label1.Caption := 'Meter Serial Number';
+  end;
+end;
+
+procedure TSearchConsumerU.SearchBox1Change(Sender: TObject);
+begin
+  With mainModuleU do begin
+    VTMaster.Filtered := False;
+    if Radiobutton1.Checked then begin
+      VTMaster.Filter := 'AccountNumber LIKE ' + QuotedStr('%'+ SearchBox1.Text +'%');
+    end else if Radiobutton1.Checked then begin
+      VTMaster.Filter := 'Name LIKE ' + QuotedStr('%'+ SearchBox1.Text +'%');
+    end else if Radiobutton1.Checked then begin
+      VTMaster.Filter := 'Serial LIKE ' + QuotedStr('%'+ SearchBox1.Text +'%');
+    end;
+    VTMaster.Filtered := True;
+  end;
+end;
+
+end.

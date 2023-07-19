@@ -1,0 +1,18 @@
+program PNViewingSystem;
+
+uses
+  Vcl.Forms,
+  UMainForm in 'UMainForm.pas' {MainForm},
+  UProgress in 'UProgress.pas' {ProgressBar},
+  UMainModuleConnection in 'UMainModuleConnection.pas' {MainModuleU: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TProgressBar, ProgressBar);
+  Application.CreateForm(TMainModuleU, MainModuleU);
+  Application.Run;
+end.

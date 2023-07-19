@@ -1,0 +1,353 @@
+unit UMainForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Mask,
+  DBCtrlsEh, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibVCL,
+  GridsEh, DBAxisGridsEh, DBGridEh, Vcl.ComCtrls, Vcl.Menus, MemDS, VirtualTable,
+  FireDAC.Comp.BatchMove, FireDAC.Comp.BatchMove.DataSet, uTToastMessage;
+
+type
+  TMainForm = class(TForm)
+    MainMenu1: TMainMenu;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBGridEh1: TDBGridEh;
+    DSMaster: TDataSource;
+    Label1: TLabel;
+    DBEditEh1: TDBEditEh;
+    Shape1: TShape;
+    Panel3: TPanel;
+    Shape2: TShape;
+    Label2: TLabel;
+    DBEditEh2: TDBEditEh;
+    Label3: TLabel;
+    DBEditEh3: TDBEditEh;
+    Label4: TLabel;
+    Label5: TLabel;
+    DBEditEh5: TDBEditEh;
+    Label6: TLabel;
+    Label7: TLabel;
+    Shape3: TShape;
+    Label8: TLabel;
+    DBEditEh6: TDBEditEh;
+    Label9: TLabel;
+    DBEditEh7: TDBEditEh;
+    FDBatchMoveDataSetReader1: TFDBatchMoveDataSetReader;
+    FDBatchMoveDataSetWriter1: TFDBatchMoveDataSetWriter;
+    FDBatchMove1: TFDBatchMove;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    DSLedger: TDataSource;
+    SearchConsumer1: TMenuItem;
+    PopupMenu1: TPopupMenu;
+    PrintLedger1: TMenuItem;
+    TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    DSARLedger: TDataSource;
+    DBGridEh3: TDBGridEh;
+    Panel4: TPanel;
+    Label15: TLabel;
+    DBGridEh4: TDBGridEh;
+    DSDisconnection: TDataSource;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    DBGridEh2: TDBGridEh;
+    TabSheet9: TTabSheet;
+    Label16: TLabel;
+    DBGridEh5: TDBGridEh;
+    DSReconnection: TDataSource;
+    Label17: TLabel;
+    DBGridEh6: TDBGridEh;
+    DSChangeMeter: TDataSource;
+    Panel7: TPanel;
+    Label18: TLabel;
+    DBGridEh7: TDBGridEh;
+    Panel8: TPanel;
+    DBGridEh8: TDBGridEh;
+    Label19: TLabel;
+    DBGridEh9: TDBGridEh;
+    DSTempBillHistory: TDataSource;
+    DSChangeName: TDataSource;
+    DSTransferArea: TDataSource;
+    DBGridEh10: TDBGridEh;
+    DSUnPaidBills: TDataSource;
+    Panel9: TPanel;
+    Label20: TLabel;
+    DBGridEh11: TDBGridEh;
+    Panel10: TPanel;
+    Label21: TLabel;
+    DBGridEh12: TDBGridEh;
+    DSPromissoryNote: TDataSource;
+    DSOtherChargesHistory: TDataSource;
+    DBGridEh13: TDBGridEh;
+    DSReferenceFV: TDataSource;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure FDBatchMove1Progress(ASender: TObject; APhase: TFDBatchMovePhase);
+    procedure DSMasterDataChange(Sender: TObject; Field: TField);
+    procedure PageControl1Change(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SearchConsumer1Click(Sender: TObject);
+    procedure PrintLedger1Click(Sender: TObject);
+    procedure Label24Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    Var
+      ToastMessage : TToastMessage;
+  public
+    { Public declarations }
+    Var
+      OnLoadingString : String;
+      OnCounterString : String;
+      LocateAccountNumber : String;
+      OnEditorMode : Boolean;
+      CounterEditorMode : Integer;
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses UProgress,UMainModuleConnection,USearchConsumer,UReport;
+
+procedure TMainForm.DSMasterDataChange(Sender: TObject; Field: TField);
+begin
+   with MainModuleU do begin
+
+     if VTMasterRateCode.AsString = 'R' then begin
+       Label14.Caption := 'RESIDENTIAL';
+     end else if VTMasterRateCode.AsString = 'I' then begin
+       Label14.Caption := 'INDUSTRIAL';
+     end else if VTMasterRateCode.AsString = 'C' then begin
+       Label14.Caption := 'COMMERCIAL';
+     end else if VTMasterRateCode.AsString = 'P' then begin
+       Label14.Caption := 'PUBLIC BUILDING';
+     end else if VTMasterRateCode.AsString = 'S' then begin
+       Label14.Caption := 'STREET LIGHT';
+     end else if VTMasterRateCode.AsString = 'G' then begin
+       Label14.Caption := 'IRRIGATION';
+     end;
+
+
+     if VTMasterConsCode.AsString = 'A' then begin
+       Label12.Caption := 'ACTIVE';
+     end else if VTMasterConsCode.AsString = 'X' then begin
+       Label12.Caption := 'INACTIVE';
+     end else begin
+       Label12.Caption := VTMasterConsCode.AsString;
+     end;
+
+     if VTMasterConnCode.AsString = '1' then begin
+       Label13.Caption := 'ACTIVE';
+     end else if VTMasterConnCode.AsString = '3' then begin
+       Label13.Caption := 'DISCO VACANT';
+     end else begin
+       Label13.Caption := VTMasterConnCode.AsString;
+     end;
+
+     Label23.Caption := VTMasterMeterBrand.AsString + VTMasterSerial.AsString;
+
+   end;
+
+
+
+end;
+
+procedure TMainForm.FDBatchMove1Progress(ASender: TObject;
+  APhase: TFDBatchMovePhase);
+begin
+  Application.ProcessMessages;
+  if APhase = psFinishing then begin
+    ProgressBar.Close;
+    MainModuleU.VTMaster.IndexFieldNames := 'Book;Sequence';
+  end;
+
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  ToastMessage := TToastMessage.Create(Self);
+end;
+
+procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_F1 then begin
+    SearchConsumerU.ShowModal;
+  end;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  Application.ProcessMessages;
+  ProgressBar.Show();
+  //Sleep(10000);
+  //
+  with MainModuleU do begin
+    VTMaster.Clear;
+    FDBatchMove1.Execute;
+    VTMaster.Open;
+  end;
+
+   CounterEditorMode := 0;
+   OnEditorMode := False;
+end;
+
+procedure TMainForm.Label24Click(Sender: TObject);
+
+begin
+   if CounterEditorMode = 10 then begin
+     OnEditorMode := True;
+     CounterEditorMode := 0;
+   end else if CounterEditorMode < 10 then begin
+     OnEditorMode := False;
+     CounterEditorMode := CounterEditorMode + 1;
+     if CounterEditorMode >= 5 then begin
+       ToastMessage.Toast(tpInfo,'DEVELOPER',IntToStr(10-CounterEditorMode) + ' Click to Developer Mode!!    ', 20);
+     end;
+
+   end;
+
+   if OnEditorMode then begin
+     Self.Caption := 'HQ Ledger Viewer [DEVELOPER MODE]';
+     ToastMessage.Toast(tpInfo,'DEVELOPER','You Are Now In Developer Mode',20);
+
+   end;
+end;
+
+procedure TMainForm.PageControl1Change(Sender: TObject);
+begin
+  with MainModuleU do begin
+    if PageControl1.ActivePageIndex = 1 then begin
+      qryARLedger.Close;
+      qryARLedger.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryARLedger.FetchOptions.Mode := fmAll;
+      qryARLedger.Open;
+      qryARLedger.Last;
+    end else if PageControl1.ActivePageIndex = 2 then begin
+      qryDisconnection.Close;
+      qryDisconnection.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryDisconnection.FetchOptions.Mode := fmAll;
+      qryDisconnection.Open;
+      qryDisconnection.Last;
+
+      qryReconnection.Close;
+      qryReconnection.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryReconnection.FetchOptions.Mode := fmAll;
+      qryReconnection.Open;
+      qryReconnection.Last;
+
+      qryChangeMeter.Close;
+      qryChangeMeter.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryChangeMeter.FetchOptions.Mode := fmAll;
+      qryChangeMeter.Open;
+      qryChangeMeter.Last;
+    end else if PageControl1.ActivePageIndex = 3 then begin
+      qryChangeName.Close;
+      qryChangeName.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryChangeName.FetchOptions.Mode := fmAll;
+      qryChangeName.Open;
+      qryChangeName.Last;
+
+      qryTransferArea.Close;
+      qryTransferArea.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryTransferArea.FetchOptions.Mode := fmAll;
+      qryTransferArea.Open;
+      qryTransferArea.Last;
+    end else if PageControl1.ActivePageIndex = 4 then begin
+      qryTempBillHistory.Close;
+      qryTempBillHistory.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryTempBillHistory.FetchOptions.Mode := fmAll;
+      qryTempBillHistory.Open;
+      qryTempBillHistory.Last;
+    end else if PageControl1.ActivePageIndex = 5 then begin
+      qryLedger.Close;
+      qryLedger.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryLedger.FetchOptions.Mode := fmAll;
+      qryLedger.Open;
+      qryLedger.Last;
+    end else if PageControl1.ActivePageIndex = 6 then begin
+      qryUnPaidBills.Close;
+      qryUnPaidBills.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryUnPaidBills.FetchOptions.Mode := fmAll;
+      qryUnPaidBills.Open;
+      qryUnPaidBills.Last;
+    end else if PageControl1.ActivePageIndex = 7 then begin
+      qryPromissoryNote.Close;
+      qryPromissoryNote.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryPromissoryNote.FetchOptions.Mode := fmAll;
+      qryPromissoryNote.Open;
+      qryPromissoryNote.Last;
+
+      qryOtherCharges.Close;
+      qryOtherCharges.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryOtherCharges.FetchOptions.Mode := fmAll;
+      qryOtherCharges.Open;
+      qryOtherCharges.Last;
+    end else if PageControl1.ActivePageIndex = 8 then begin
+      qryReferenceFV.Close;
+      qryReferenceFV.ParamByName('ACode').AsString := VTMasterCode.AsString;
+      qryReferenceFV.FetchOptions.Mode := fmAll;
+      qryReferenceFV.Open;
+      qryReferenceFV.Last;
+    end else begin
+      LocateAccountNumber := SearchConsumerU.LocateAccountNumber;
+      VTMaster.Filtered := False;
+      VTMaster.Locate('AccountNumber',LocateAccountNumber,[]);
+    end;
+  end;
+
+end;
+
+procedure TMainForm.PrintLedger1Click(Sender: TObject);
+begin
+  if not Assigned(ReportForm) then ReportForm := TReportForm.Create(Application);
+	with ReportForm do
+   begin
+      qryLedgerPrint.Close;
+      qryLedgerPrint.ParamByName('ACode').Text := MainModuleU.VTMasterCode.AsString;
+      qryLedgerPrint.Open;
+      if not qryLedgerPrint.IsEmpty then
+      begin
+         QRAccountNum.Caption  := MainModuleU.VTMasterAccountNumber.AsString;
+         QRAccountName.Caption := MainModuleU.VTMasterName.AsString;
+         QRAddress.Caption     := MainModuleU.VTMasterAddress.AsString;
+         lblMult.Caption       := MainModuleU.VTMasterMultiplier.AsString;
+         lblMETER.Caption      := MainModuleU.VTMasterMeterBrand.AsString + ' ' + MainModuleU.VTMasterSerial.AsString;
+         lblRateCode.Caption   := MainModuleU.VTMasterRateCode.AsString;
+         QuickRep1.Preview;
+      end else
+         MessageDlg('Empty Record ...', mtInformation, [mbOK], 0);
+   end;
+end;
+
+procedure TMainForm.SearchConsumer1Click(Sender: TObject);
+begin
+  SearchConsumerU.ShowModal;
+end;
+
+end.
